@@ -15,3 +15,4 @@ java -jar <path/to/avro-tools-1.7.4.jar> compile schema <path/to/schema-file> <d
 
 Example:- 
 java -jar /Users/Arpan/Documents/avro-tools-1.7.4.jar compile schema /Users/Arpan/Documents/WordCountSchema.avsc /Users/Arpan/Documents/Word_count_schema
+
