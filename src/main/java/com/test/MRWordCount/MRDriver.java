@@ -2,6 +2,7 @@ package com.test.MRWordCount;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -35,7 +36,11 @@ public class MRDriver extends Configured implements Tool {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
+        FileSystem fs = FileSystem.get(getConf());
 
+        if(fs.exists(new Path(args[1]))){
+            fs.delete(new Path(args[1]),true);
+        }
         return job.waitForCompletion(true) == true ? 0 : -1;
     }
 
