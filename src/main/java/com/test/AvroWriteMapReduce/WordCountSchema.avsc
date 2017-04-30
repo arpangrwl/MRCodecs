@@ -1,0 +1,9 @@
+{
+"namespace":"com.test.AvroWriteMapReduce",
+"type":"record","name":"WordCountSchema",
+"doc":"Avro storing of for the word count program",
+"fields":[
+{"name":"Word","type": ["null","string"],"default":null},
+{"name":"Count","type": ["null","int"],"default":null}
+]
+}

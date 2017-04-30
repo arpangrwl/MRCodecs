@@ -38,8 +38,10 @@ public class CounterMRDriver extends Configured implements Tool {
         //Setting configuration object with the Data Type of output Key and Value
         wordCountJob.setMapperClass(CounterMRMapper.class);
         wordCountJob.setReducerClass(CounterMRReducer.class);
+
         wordCountJob.setOutputKeyClass(Text.class);
         wordCountJob.setOutputValueClass(IntWritable.class);
+
         wordCountJob.setInputFormatClass(TextInputFormat.class);
         wordCountJob.setOutputFormatClass(NullOutputFormat.class);
 
