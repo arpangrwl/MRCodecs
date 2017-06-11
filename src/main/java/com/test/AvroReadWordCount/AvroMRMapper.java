@@ -3,10 +3,12 @@ package com.test.AvroReadWordCount;
 
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.mapred.AvroKey;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
 import java.io.IOException;
 
@@ -20,6 +22,9 @@ public class AvroMRMapper extends Mapper<AvroKey<GenericRecord>, NullWritable, T
         try {
 
             if (value != null) {
+                Path filePath = ((FileSplit) context.getInputSplit()).getPath();
+                String filePathString = ((FileSplit) context.getInputSplit()).getPath().toString();
+
 
                 String StudentName = (String) key.datum().get("targetTopic");
                 int Marks = (Integer) key.datum().get("partition");

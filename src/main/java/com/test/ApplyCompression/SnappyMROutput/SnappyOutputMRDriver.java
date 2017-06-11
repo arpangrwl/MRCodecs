@@ -1,4 +1,5 @@
-package com.test.MRWordCount;
+package com.test.ApplyCompression.SnappyMROutput;
+
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -12,26 +13,34 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
-public class MRDriver extends Configured implements Tool {
+public class SnappyOutputMRDriver extends Configured implements Tool {
 
     public static void main(String[] args) throws Exception {
-        ToolRunner.run(new Configuration(), new MRDriver(), args);
+        ToolRunner.run(new Configuration(), new SnappyOutputMRDriver(), args);
     }
 
     public int run(String[] args) throws Exception {
         //creating a Job configuration object and assigning a job name for identification purposes
-        Job job = new Job(getConf());
 
-      //  Configuration conf = new Configuration();
-        //conf.set("fs.default.name","hdfs://17.176.88.191:50001");
+        Configuration conf = getConf();
+
+        conf.set("mapred.compress.map.output", "true");
+        conf.set("mapred.map.output.compression.codec","org.apache.hadoop.io.compress.SnappyCodec");
+        conf.set("io.compression.codecs","org.apache.hadoop.io.compress.SnappyCodec");
+        // Compress MapReduce output - snappy
+        conf.set("mapred.output.compress", "true");
+        conf.set("mapred.output.compression","org.apache.hadoop.io.compress.SnappyCodec");
+        conf.set("output.compression.enabled", "true");
+        conf.set("output.compression.codec", "org.apache.hadoop.io.compress.SnappyCodec");
 
 
+        Job job = new Job(conf);
         job.setJobName("Word Count Job");
-        job.setJarByClass(MRDriver.class);
+        job.setJarByClass(SnappyOutputMRDriver.class);
 
         job.setNumReduceTasks(1);
-        job.setMapperClass(MRMapper.class);
-        job.setReducerClass(MRReducer.class);
+        job.setMapperClass(com.test.MRWordCount.MRMapper.class);
+        job.setReducerClass(com.test.MRWordCount.MRReducer.class);
         //the hdfs input and output directory to be fetched from the command line
         FileInputFormat.setInputPaths(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
@@ -43,8 +52,8 @@ public class MRDriver extends Configured implements Tool {
 
         FileSystem fs = FileSystem.get(getConf());
 
-        if(fs.exists(new Path(args[1]))){
-            fs.delete(new Path(args[1]),true);
+        if (fs.exists(new Path(args[1]))) {
+            fs.delete(new Path(args[1]), true);
         }
         return job.waitForCompletion(true) == true ? 0 : -1;
     }
