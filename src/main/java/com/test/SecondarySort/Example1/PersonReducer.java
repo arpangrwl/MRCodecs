@@ -1,4 +1,4 @@
-package com.test.SecondarySort;
+package com.test.SecondarySort.Example1;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;

@@ -1,4 +1,4 @@
-package com.test.SecondarySort;/*#############################################################################################
+package com.test.SecondarySort.Example1;/*#############################################################################################
 # Description: SecondarySort using Map Reduce
 #
 # Input: 
